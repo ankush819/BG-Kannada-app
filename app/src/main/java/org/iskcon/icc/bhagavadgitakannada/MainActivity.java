@@ -1,6 +1,7 @@
 package org.iskcon.icc.bhagavadgitakannada;
 
 import android.content.ComponentName;
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.RemoteException;
@@ -36,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
                 mMediaControllerCompat = new MediaControllerCompat(MainActivity.this, mMediaBrowserCompat.getSessionToken());
                 mMediaControllerCompat.registerCallback(mMediaControllerCompatCallback);
                 setSupportMediaController(mMediaControllerCompat);
-                getSupportMediaController().getTransportControls().playFromMediaId(String.valueOf(R.raw.srila_prabhupada), null);
+                //getSupportMediaController().getTransportControls().playFromMediaId(String.valueOf(R.raw.srila_prabhupada), null);
 
             } catch( RemoteException e ) {
 
@@ -71,16 +72,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        //setSupportActionBar(toolbar);
 
-        playButton = (Button) findViewById(R.id.button);
-        mMediaBrowserCompat = new MediaBrowserCompat(this, new ComponentName(this, ControlPlayerService.class),
-                mMediaBrowserCompatConnectionCallback, getIntent().getExtras());
+        //playButton = (Button) findViewById(R.id.button);
+        //mMediaBrowserCompat = new MediaBrowserCompat(this, new ComponentName(this, ControlPlayerService.class),
+         //       mMediaBrowserCompatConnectionCallback, getIntent().getExtras());
 
-        mMediaBrowserCompat.connect();
-
-        playButton.setOnClickListener(new View.OnClickListener() {
+        //mMediaBrowserCompat.connect();
+        //playChapter(0);
+        /*playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mCurrentState == STATE_PAUSED) {
@@ -93,17 +94,22 @@ public class MainActivity extends AppCompatActivity {
                     mCurrentState = STATE_PAUSED;
                 }
             }
-        });
+        });*/
+    }
+
+    public void playChapter(int chapterIndex) {
+        //TODO Logic to get the right Verses to play
+        //getSupportMediaController().getTransportControls().playFromMediaId(String.valueOf(R.raw.srila_prabhupada),null);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if( getSupportMediaController().getPlaybackState().getState() == PlaybackStateCompat.STATE_PLAYING ) {
-            getSupportMediaController().getTransportControls().pause();
-        }
+        //if( getSupportMediaController().getPlaybackState().getState() == PlaybackStateCompat.STATE_PLAYING ) {
+        //    getSupportMediaController().getTransportControls().pause();
+        //}
 
-        mMediaBrowserCompat.disconnect();
+        //mMediaBrowserCompat.disconnect();
     }
 
     @Override
