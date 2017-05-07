@@ -1,17 +1,13 @@
 package org.iskcon.icc.bhagavadgitakannada;
 
 import android.content.ComponentName;
-import android.content.Intent;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.RemoteException;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.media.MediaBrowserCompat;
 import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int STATE_PLAYING = 1;
 
     private int mCurrentState;
-
+    private static final String TAG = MainActivity.class.getSimpleName();
     private MediaBrowserCompat mMediaBrowserCompat;
     private MediaControllerCompat mMediaControllerCompat;
     private Button playButton;
@@ -37,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
                 mMediaControllerCompat = new MediaControllerCompat(MainActivity.this, mMediaBrowserCompat.getSessionToken());
                 mMediaControllerCompat.registerCallback(mMediaControllerCompatCallback);
                 setSupportMediaController(mMediaControllerCompat);
-                //getSupportMediaController().getTransportControls().playFromMediaId(String.valueOf(R.raw.srila_prabhupada), null);
+                getSupportMediaController().getTransportControls().playFromMediaId(String.valueOf(R.raw.aindra_prabhu_slow), null);
 
             } catch( RemoteException e ) {
 
@@ -75,13 +71,13 @@ public class MainActivity extends AppCompatActivity {
         //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
 
-        //playButton = (Button) findViewById(R.id.button);
-        //mMediaBrowserCompat = new MediaBrowserCompat(this, new ComponentName(this, ControlPlayerService.class),
-         //       mMediaBrowserCompatConnectionCallback, getIntent().getExtras());
-
-        //mMediaBrowserCompat.connect();
-        //playChapter(0);
-        /*playButton.setOnClickListener(new View.OnClickListener() {
+        playButton = (Button) findViewById(R.id.button);
+        mMediaBrowserCompat = new MediaBrowserCompat(this, new ComponentName(this, ControlPlayerService.class),
+                mMediaBrowserCompatConnectionCallback, getIntent().getExtras());
+        Log.d(TAG,"MediaBrowser contains " + mMediaBrowserCompat.toString());
+        mMediaBrowserCompat.connect();
+        playChapter(0);
+        playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mCurrentState == STATE_PAUSED) {
@@ -92,24 +88,25 @@ public class MainActivity extends AppCompatActivity {
                         getSupportMediaController().getTransportControls().pause();
                     }
                     mCurrentState = STATE_PAUSED;
+
                 }
             }
-        });*/
+        });
     }
 
     public void playChapter(int chapterIndex) {
         //TODO Logic to get the right Verses to play
-        //getSupportMediaController().getTransportControls().playFromMediaId(String.valueOf(R.raw.srila_prabhupada),null);
+       //getSupportMediaController().getTransportControls().playFromMediaId(String.valueOf(R.raw.aindra_prabhu_slow),null);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        //if( getSupportMediaController().getPlaybackState().getState() == PlaybackStateCompat.STATE_PLAYING ) {
-        //    getSupportMediaController().getTransportControls().pause();
-        //}
+        if( getSupportMediaController().getPlaybackState().getState() == PlaybackStateCompat.STATE_PLAYING ) {
+            getSupportMediaController().getTransportControls().pause();
+        }
 
-        //mMediaBrowserCompat.disconnect();
+        mMediaBrowserCompat.disconnect();
     }
 
     @Override

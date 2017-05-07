@@ -25,7 +25,7 @@ import java.util.List;
 
 public class DisplayPlayList extends Activity {
 
-    private SparseArray<ArrayList> chapterWiseVerseList = new SparseArray();
+    //private SparseArray<ArrayList> chapterWiseVerseList = new SparseArray();
     private ArrayList chapterNames = new ArrayList();
 
     @Override
@@ -33,7 +33,7 @@ public class DisplayPlayList extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.playlist);
 
-        ChapterUtilities chapterUtilities = new ChapterUtilities();
+        //ChapterUtilities chapterUtilities = new ChapterUtilities();
         chapterNames = ChapterUtilities.getChapterNames();
         Log.d("My App",Arrays.toString(chapterNames.toArray()));
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, R.layout.playlist_item, chapterNames);
