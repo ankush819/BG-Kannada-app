@@ -1,3 +1,11 @@
+/*
+  TODO 1 : Start playing the audio file automatically on activity start. This will solve the issue of onDestroy Null problems
+  TODO 2 : Implement methods to get the right raw resources based on the position of the clicked ListView event
+  TODO 3 : Implement next chapter, previous chapter logic and seek bar
+  TODO 4 : Implement auto play next chapter when a chapter ends. It stops playback on last chapter. Button will change to start playing 1st
+  TODO 5 :
+*/
+
 package org.iskcon.icc.bhagavadgitakannada;
 
 import android.content.ComponentName;
@@ -33,8 +41,9 @@ public class MainActivity extends AppCompatActivity {
                 mMediaControllerCompat = new MediaControllerCompat(MainActivity.this, mMediaBrowserCompat.getSessionToken());
                 mMediaControllerCompat.registerCallback(mMediaControllerCompatCallback);
                 setSupportMediaController(mMediaControllerCompat);
-                getSupportMediaController().getTransportControls().playFromMediaId(String.valueOf(R.raw.aindra_prabhu_slow), null);
-
+                String chapterRawResourceName = getIntent().getStringExtra("chapterRawResourceName");
+                int chapterId = getApplicationContext().getResources().getIdentifier(chapterRawResourceName, "raw", getApplicationContext().getPackageName());
+                getSupportMediaController().getTransportControls().playFromMediaId(String.valueOf(chapterId), null);
             } catch( RemoteException e ) {
 
             }
@@ -76,7 +85,6 @@ public class MainActivity extends AppCompatActivity {
                 mMediaBrowserCompatConnectionCallback, getIntent().getExtras());
         Log.d(TAG,"MediaBrowser contains " + mMediaBrowserCompat.toString());
         mMediaBrowserCompat.connect();
-        playChapter(0);
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -94,14 +102,10 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void playChapter(int chapterIndex) {
-        //TODO Logic to get the right Verses to play
-       //getSupportMediaController().getTransportControls().playFromMediaId(String.valueOf(R.raw.aindra_prabhu_slow),null);
-    }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (getSupportMediaController().getPlaybackState() == null) return;
         if( getSupportMediaController().getPlaybackState().getState() == PlaybackStateCompat.STATE_PLAYING ) {
             getSupportMediaController().getTransportControls().pause();
         }

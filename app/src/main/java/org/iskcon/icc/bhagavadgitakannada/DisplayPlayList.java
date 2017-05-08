@@ -48,9 +48,13 @@ public class DisplayPlayList extends Activity {
                 //TODO Get the chapter details and send it to the MainActivity page to fetch and start playing
                 int chapterIndex = position;
                 Intent playChapterIntent = new Intent(getApplicationContext(), MainActivity.class);
-                playChapterIntent.putExtra("chapterIndex", chapterIndex);
+                playChapterIntent.putExtra("chapterIndex", String.valueOf(chapterIndex));
+                String chapterRawResourceName = "chapter" + String.valueOf(chapterIndex);
+                playChapterIntent.putExtra("chapterRawResourceName", chapterRawResourceName);
                 startActivity(playChapterIntent);
             }
         });
     }
+
+
 }
